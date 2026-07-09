@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GearZone - Phụ kiện máy tính</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo">GZ</div>
+        <div>
+          <p class="eyebrow">GearZone</p>
+          <h1>Phụ kiện PC cao cấp</h1>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="#features">Tính năng</a>
+        <a href="#products">Sản phẩm</a>
+        <a href="#contact">Liên hệ</a>
+      </nav>
+      <div class="header-actions">
+        <button class="button button-outline" id="customerAuthToggle">Đăng nhập</button>
+        <button class="button button-outline" id="adminLoginToggle">Admin</button>
+        <button class="button button-secondary" id="cartToggle">
+          Giỏ hàng (<span id="cartCount">0</span>)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Siêu ưu đãi cuối tháng</p>
+          <h2>Gear máy tính mạnh mẽ, phong cách chuyên nghiệp.</h2>
+          <p>Chọn ngay bộ phụ kiện PC hoàn hảo với bàn phím cơ, chuột gaming, tản nhiệt RGB và linh kiện hiệu suất cao.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#products">Mua ngay</a>
+            <a class="button button-outline" href="#features">Khám phá</a>
+          </div>
+        </div>
+        <div class="hero-cards">
+          <article class="hero-card">
+            <div class="hero-icon">⌨️</div>
+            <h3>Bàn phím cơ</h3>
+            <p>Phím switch nhanh nhạy, LED RGB sống động.</p>
+          </article>
+          <article class="hero-card">
+            <div class="hero-icon">🖱️</div>
+            <h3>Chuột gaming</h3>
+            <p>Độ phân giải cao, thiết kế ôm tay linh hoạt.</p>
+          </article>
+          <article class="hero-card">
+            <div class="hero-icon">💡</div>
+            <h3>Phụ kiện LED</h3>
+            <p>Tăng vẻ đẹp PC với ánh sáng RGB tùy chỉnh.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <div class="container section-heading">
+        <p class="eyebrow">Đặc điểm nổi bật</p>
+        <h2>GearZone giúp bạn xây dựng bộ PC đẳng cấp.</h2>
+      </div>
+      <div class="container feature-grid">
+        <article class="feature-card">
+          <h3>Giao diện trực quan</h3>
+          <p>Tìm kiếm nhanh, lọc linh hoạt và thêm vào giỏ chỉ trong vài giây.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Giỏ hàng thông minh</h3>
+          <p>Quản lý số lượng, xem tổng tiền và thanh toán dễ dàng.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Hỗ trợ tư vấn</h3>
+          <p>Thông tin sản phẩm rõ ràng giúp bạn chọn đúng gear cần thiết.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="catalog" id="products">
+      <div class="container section-heading">
+        <p class="eyebrow">Sản phẩm nổi bật</p>
+        <h2>Gear máy tính đỉnh cao cho mọi nhu cầu.</h2>
+      </div>
+      <div class="container catalog-controls">
+        <div class="control-group">
+          <label for="searchInput">Tìm kiếm</label>
+          <input id="searchInput" type="search" placeholder="Nhập tên sản phẩm..." />
+        </div>
+        <div class="control-group">
+          <label for="categoryFilter">Danh mục</label>
+          <select id="categoryFilter">
+            <option value="all">Tất cả</option>
+            <option value="keyboard">Bàn phím</option>
+            <option value="mouse">Chuột</option>
+            <option value="headset">Tai nghe</option>
+            <option value="cooling">Làm mát</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="sortSelect">Sắp xếp</label>
+          <select id="sortSelect">
+            <option value="default">Mặc định</option>
+            <option value="price-asc">Giá tăng dần</option>
+            <option value="price-desc">Giá giảm dần</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="container product-grid" id="productGrid"></div>
+    </section>
+  </main>
+
+  <aside class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+      <h2>Giỏ hàng</h2>
+      <button class="icon-button" id="closeCart">✕</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-summary">
+      <div>
+        <p>Tổng sản phẩm:</p>
+        <strong id="cartTotalCount">0</strong>
+      </div>
+      <div>
+        <p>Thành tiền:</p>
+        <strong id="cartTotalPrice">0 đ</strong>
+      </div>
+      <button class="button button-primary" id="checkoutButton">Thanh toán</button>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <div class="modal-backdrop" id="customerAuthModal">
+    <div class="modal-card customer-card-shell">
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">Tài khoản khách hàng</p>
+          <h2 id="customerModalTitle">Đăng nhập hoặc đăng ký</h2>
+        </div>
+        <button class="icon-button" id="closeCustomerAuthModal">✕</button>
+      </div>
+
+      <div class="auth-switcher">
+        <button class="tab-button active" data-view="login" id="showLoginView">Đăng nhập</button>
+        <button class="tab-button" data-view="register" id="showRegisterView">Đăng ký</button>
+      </div>
+
+      <div id="customerAuthPanel" class="customer-auth-panel">
+        <form id="customerLoginForm" class="modal-form auth-form">
+          <div class="form-group">
+            <label for="customerLoginIdentifier">Số điện thoại hoặc email</label>
+            <input id="customerLoginIdentifier" name="identifier" type="text" required />
+          </div>
+          <div class="form-group">
+            <label for="customerLoginPassword">Mật khẩu</label>
+            <input id="customerLoginPassword" name="password" type="password" required />
+          </div>
+          <button class="button button-primary" type="submit">Đăng nhập</button>
+        </form>
+
+        <form id="customerRegisterForm" class="modal-form auth-form hidden">
+          <div class="form-group">
+            <label for="customerName">Họ và tên</label>
+            <input id="customerName" name="name" type="text" required />
+          </div>
+          <div class="form-group">
+            <label for="customerPhone">Số điện thoại</label>
+            <input id="customerPhone" name="phone" type="tel" required />
+          </div>
+          <div class="form-group">
+            <label for="customerEmail">Email</label>
+            <input id="customerEmail" name="email" type="email" required />
+          </div>
+          <div class="form-group">
+            <label for="customerPassword">Mật khẩu</label>
+            <input id="customerPassword" name="password" type="password" required />
+          </div>
+          <button class="button button-primary" type="submit">Tạo tài khoản</button>
+        </form>
+      </div>
+
+      <div id="customerAccountPanel" class="customer-account-panel hidden">
+        <div class="customer-account-card">
+          <h3 id="customerAccountName">Xin chào</h3>
+          <p id="customerAccountInfo"></p>
+          <form id="customerSettingsForm" class="modal-form">
+            <div class="form-group">
+              <label for="customerSettingsPhone">Số điện thoại nhận hàng</label>
+              <input id="customerSettingsPhone" name="phone" type="tel" required />
+            </div>
+            <div class="form-group">
+              <label for="customerSettingsAddress">Địa chỉ nhận hàng</label>
+              <textarea id="customerSettingsAddress" name="address" rows="3" required></textarea>
+            </div>
+            <button class="button button-primary" type="submit">Cập nhật thông tin</button>
+          </form>
+          <button class="button button-outline" id="customerLogoutButton">Đăng xuất</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="adminModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Đăng nhập Admin</h2>
+        <button class="icon-button" id="closeAdminModal">✕</button>
+      </div>
+      <form id="adminLoginForm" class="modal-form">
+        <div class="form-group">
+          <label for="adminUsername">Tài khoản</label>
+          <input id="adminUsername" name="username" type="text" placeholder="admin" required />
+        </div>
+        <div class="form-group">
+          <label for="adminPassword">Mật khẩu</label>
+          <input id="adminPassword" name="password" type="password" placeholder="admin123" required />
+        </div>
+        <button class="button button-primary" type="submit">Đăng nhập</button>
+        <p class="form-hint">Tài khoản demo: admin / admin123</p>
+      </form>
+      <div id="adminDashboard" class="admin-dashboard hidden">
+        <div class="admin-toolbar">
+          <h3>Bảng điều khiển quản trị</h3>
+          <button class="button button-outline" id="logoutAdminButton">Đăng xuất</button>
+        </div>
+        <div class="admin-stats">
+          <div class="admin-stat-card">
+            <span>Tổng đơn hàng</span>
+            <strong id="statsOrders">0</strong>
+          </div>
+          <div class="admin-stat-card">
+            <span>Đang chờ</span>
+            <strong id="statsPending">0</strong>
+          </div>
+          <div class="admin-stat-card">
+            <span>Khách hàng</span>
+            <strong id="statsCustomers">0</strong>
+          </div>
+        </div>
+        <section class="admin-section">
+          <h4>Đơn hàng</h4>
+          <div id="ordersList" class="admin-list"></div>
+        </section>
+        <section class="admin-section">
+          <h4>Khách hàng</h4>
+          <div id="customersList" class="admin-list"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="checkoutModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Thông tin đặt hàng</h2>
+        <button class="icon-button" id="closeCheckoutModal">✕</button>
+      </div>
+      <form id="checkoutForm" class="modal-form">
+        <div class="form-group">
+          <label for="customerName">Họ và tên</label>
+          <input id="customerName" name="name" type="text" required />
+        </div>
+        <div class="form-group">
+          <label for="customerPhone">Số điện thoại</label>
+          <input id="customerPhone" name="phone" type="tel" required />
+        </div>
+        <div class="form-group">
+          <label for="customerEmail">Email</label>
+          <input id="customerEmail" name="email" type="email" />
+        </div>
+        <div class="form-group">
+          <label for="customerAddress">Địa chỉ nhận hàng</label>
+          <textarea id="customerAddress" name="address" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="customerNote">Ghi chú</label>
+          <textarea id="customerNote" name="note" rows="3"></textarea>
+        </div>
+        <button class="button button-primary" type="submit">Xác nhận đơn hàng</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="site-footer" id="contact">
+    <div class="container footer-grid">
+      <div>
+        <h3>GearZone</h3>
+        <p>Trang web mẫu bán gear máy tính. Thiết kế dành cho trải nghiệm mua sắm nhanh và dễ dàng.</p>
+      </div>
+      <div>
+        <h4>Liên hệ</h4>
+        <p>Email: support@gearzone.vn</p>
+        <p>Hotline: 1900 1234</p>
+      </div>
+      <div>
+        <h4>Địa chỉ</h4>
+        <p>123 Đường Công Nghệ, Quận 1, TP.HCM</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
