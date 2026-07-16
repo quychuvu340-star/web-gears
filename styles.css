@@ -235,7 +235,7 @@ body {
 .catalog-controls {
   margin-top: 2rem;
   align-items: end;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .control-group {
@@ -322,6 +322,73 @@ body {
   color: var(--text-muted);
 }
 
+.product-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 0.75rem;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.status-pill.sale {
+  background: rgba(34, 197, 94, 0.16);
+  color: #86efac;
+}
+
+.status-pill.in-stock {
+  background: rgba(56, 189, 248, 0.16);
+  color: #7dd3fc;
+}
+
+.status-pill.out-of-stock {
+  background: rgba(244, 63, 94, 0.16);
+  color: #fda4af;
+}
+
+.status-pill.coming-soon {
+  background: rgba(245, 158, 11, 0.16);
+  color: #fde68a;
+}
+
+.status-control-group {
+  grid-column: 1 / -1;
+}
+
+.status-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.status-chip {
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.7rem 0.95rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.status-chip.active {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  border-color: transparent;
+}
+
 .product-meta {
   display: flex;
   justify-content: space-between;
@@ -351,6 +418,12 @@ body {
 
 .product-actions button {
   width: 100%;
+}
+
+.product-actions button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .cart-panel {

@@ -8,6 +8,7 @@ const products = [
     emoji: '⌨️',
     image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=900&q=80',
     specs: ['Switch quang học', 'LED RGB 16.8M màu', 'Kết nối USB-C'],
+    status: 'sale',
   },
   {
     id: 2,
@@ -18,6 +19,7 @@ const products = [
     emoji: '🖱️',
     image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=900&q=80',
     specs: ['Cảm biến 16000 DPI', '7 nút tùy chỉnh', 'Pin 70 giờ'],
+    status: 'in-stock',
   },
   {
     id: 3,
@@ -28,6 +30,7 @@ const products = [
     emoji: '🎧',
     image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80',
     specs: ['Âm thanh vòm 7.1', 'Mic khử ồn', 'Đệm tai mềm êm'],
+    status: 'coming-soon',
   },
   {
     id: 4,
@@ -38,6 +41,7 @@ const products = [
     emoji: '❄️',
     image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
     specs: ['Quạt 120mm', 'RGB đồng bộ', 'Tản nhiệt hiệu quả'],
+    status: 'sale',
   },
   {
     id: 5,
@@ -48,6 +52,7 @@ const products = [
     emoji: '🧭',
     image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=80',
     specs: ['Bề mặt siêu trơn', 'Kích thước rộng', 'Chống trượt'],
+    status: 'in-stock',
   },
   {
     id: 6,
@@ -58,6 +63,7 @@ const products = [
     emoji: '🟦',
     image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&q=80',
     specs: ['Layout 65%', 'Keycap PBT', 'Nhẹ và di chuyển dễ'],
+    status: 'out-of-stock',
   },
   {
     id: 7,
@@ -68,6 +74,7 @@ const products = [
     emoji: '🔌',
     image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
     specs: ['4 cổng USB 3.0', 'Nguồn ổn định', 'Thiết kế gọn nhẹ'],
+    status: 'in-stock',
   },
   {
     id: 8,
@@ -78,6 +85,7 @@ const products = [
     emoji: '🧤',
     image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=900&q=80',
     specs: ['Đệm gel êm', 'Hỗ trợ cổ tay', 'Phù hợp dùng lâu'],
+    status: 'sale',
   },
 ];
 
@@ -85,6 +93,7 @@ const productGrid = document.getElementById('productGrid');
 const searchInput = document.getElementById('searchInput');
 const categoryFilter = document.getElementById('categoryFilter');
 const sortSelect = document.getElementById('sortSelect');
+const statusMenu = document.getElementById('statusMenu');
 const cartToggle = document.getElementById('cartToggle');
 const cartPanel = document.getElementById('cartPanel');
 const closeCart = document.getElementById('closeCart');
@@ -132,6 +141,14 @@ let orders = loadOrders();
 let currentAdmin = null;
 let customers = loadCustomers();
 let currentCustomer = loadCurrentCustomer();
+let currentStatusFilter = 'all';
+
+const statusMeta = {
+  sale: { label: 'Đang hạ giá', className: 'sale' },
+  'in-stock': { label: 'Hàng còn', className: 'in-stock' },
+  'out-of-stock': { label: 'Hàng hết', className: 'out-of-stock' },
+  'coming-soon': { label: 'Hàng đang về', className: 'coming-soon' },
+};
 
 function formatCurrency(value) {
   return value.toLocaleString('vi-VN') + ' đ';
@@ -207,6 +224,12 @@ function buildCustomers() {
   }, []);
 }
 
+function updateStatusMenuUI() {
+  document.querySelectorAll('.status-chip').forEach((button) => {
+    button.classList.toggle('active', button.dataset.status === currentStatusFilter);
+  });
+}
+
 function renderProducts() {
   const searchValue = searchInput.value.trim().toLowerCase();
   const categoryValue = categoryFilter.value;
@@ -215,7 +238,8 @@ function renderProducts() {
   let filtered = products.filter((product) => {
     const matchesSearch = product.name.toLowerCase().includes(searchValue) || product.description.toLowerCase().includes(searchValue);
     const matchesCategory = categoryValue === 'all' || product.category === categoryValue;
-    return matchesSearch && matchesCategory;
+    const matchesStatus = currentStatusFilter === 'all' || product.status === currentStatusFilter;
+    return matchesSearch && matchesCategory && matchesStatus;
   });
 
   if (sortValue === 'price-asc') {
@@ -224,27 +248,36 @@ function renderProducts() {
     filtered.sort((a, b) => b.price - a.price);
   }
 
-  productGrid.innerHTML = filtered.map((product) => `
-    <article class="product-card">
-      <div class="product-image">
-        ${product.image ? `<img src="${product.image}" alt="${product.name}" />` : `<span>${product.emoji}</span>`}
-      </div>
-      <div>
-        <h3>${product.name}</h3>
-        <p>${product.description}</p>
-      </div>
-      <ul class="product-specs">
-        ${product.specs.map((spec) => `<li>${spec}</li>`).join('')}
-      </ul>
-      <div class="product-meta">
-        <span class="product-price">${formatCurrency(product.price)}</span>
-        <span class="product-tag">${product.category}</span>
-      </div>
-      <div class="product-actions">
-        <button class="button button-primary" onclick="addToCart(${product.id})">Thêm vào giỏ</button>
-      </div>
-    </article>
-  `).join('');
+  productGrid.innerHTML = filtered.map((product) => {
+    const statusInfo = statusMeta[product.status] || statusMeta['in-stock'];
+    const isDisabled = product.status === 'out-of-stock' || product.status === 'coming-soon';
+    const actionText = product.status === 'out-of-stock' ? 'Hết hàng' : product.status === 'coming-soon' ? 'Hàng đang về' : 'Thêm vào giỏ';
+
+    return `
+      <article class="product-card">
+        <div class="product-image">
+          ${product.image ? `<img src="${product.image}" alt="${product.name}" />` : `<span>${product.emoji}</span>`}
+        </div>
+        <div class="product-card-top">
+          <div>
+            <h3>${product.name}</h3>
+            <p>${product.description}</p>
+          </div>
+          <span class="status-pill ${statusInfo.className}">${statusInfo.label}</span>
+        </div>
+        <ul class="product-specs">
+          ${product.specs.map((spec) => `<li>${spec}</li>`).join('')}
+        </ul>
+        <div class="product-meta">
+          <span class="product-price">${formatCurrency(product.price)}</span>
+          <span class="product-tag">${product.category}</span>
+        </div>
+        <div class="product-actions">
+          <button class="button button-primary" onclick="addToCart(${product.id})" ${isDisabled ? 'disabled' : ''}>${actionText}</button>
+        </div>
+      </article>
+    `;
+  }).join('');
 }
 
 function updateCartUI() {
@@ -280,6 +313,13 @@ function updateCartUI() {
 
 function addToCart(productId) {
   const product = products.find((item) => item.id === productId);
+  if (!product) return;
+
+  if (product.status === 'out-of-stock' || product.status === 'coming-soon') {
+    alert('Sản phẩm này hiện không thể thêm vào giỏ hàng.');
+    return;
+  }
+
   const cartItem = cart.find((item) => item.id === productId);
 
   if (cartItem) {
@@ -623,6 +663,14 @@ function checkout() {
 searchInput.addEventListener('input', renderProducts);
 categoryFilter.addEventListener('change', renderProducts);
 sortSelect.addEventListener('change', renderProducts);
+statusMenu.addEventListener('click', (event) => {
+  const button = event.target.closest('.status-chip');
+  if (!button) return;
+
+  currentStatusFilter = button.dataset.status;
+  updateStatusMenuUI();
+  renderProducts();
+});
 cartToggle.addEventListener('click', showCart);
 closeCart.addEventListener('click', hideCart);
 overlay.addEventListener('click', hideCart);
@@ -670,6 +718,7 @@ window.addEventListener('keydown', (event) => {
   }
 });
 
+updateStatusMenuUI();
 renderProducts();
 renderCart();
 renderAdminDashboard();
